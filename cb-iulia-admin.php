@@ -131,7 +131,7 @@ function cb_iulia_update() {
 			}
 		}
 		if(!scandir($tmpDir)) {
-			rmDir($tmpDir);
+			rmdir($tmpDir);
 		}
 	}
 	?> <a href="/wp-admin/admin.php?page=cb-iulia">Zurück zum Dashboard</a> <?php

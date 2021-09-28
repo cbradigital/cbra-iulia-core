@@ -130,9 +130,8 @@ function cb_iulia_update() {
 				rename($file, $newName);
 			}
 		}
-		if(!scandir($tmpDir)) {
-			rmdir($tmpDir);
-		}
+		// hier sollte geprüft werden, ob $tmpDir existiert - aber scandir() funktioniert nicht und rmdir() löscht eh nur leere Verzeichnisse...
+		rmdir($tmpDir);
 	}
 	?> <a href="/wp-admin/admin.php?page=cb-iulia">Zurück zum Dashboard</a> <?php
 }

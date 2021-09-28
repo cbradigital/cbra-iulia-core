@@ -17,8 +17,7 @@ foreach($iuliaComponents as $name => $repo) {
 
 // Styles
 function cb_iulia_enqueue_admin_styles() {
-	wp_register_style('iulia-dashboard-css', get_stylesheet_directory() . '/cb-iulia/css/cb-iulia-dashboard.css');
-	wp_enqueue_style('iulia-dashboard-css');
+	wp_enqueue_style('cb-iulia-dashboard-css', get_stylesheet_directory_uri() . '/cb-iulia/css/cb-iulia-dashboard.css');
 }
 add_action('admin_enqueue_scripts', 'cb_iulia_enqueue_admin_styles');
 ?>

@@ -1,7 +1,7 @@
 <?php
 // Menü initialisieren
 function cb_iulia_initialise_menu() {
-	add_menu_page( // Hauptmenü
+	add_menu_page(
 		'IULIA',								// Seitentitel
 		'IULIA',								// Menü-Titel
 		'administrator',						// notwendige Berechtigungsstufe
@@ -9,7 +9,7 @@ function cb_iulia_initialise_menu() {
 		'cb_iulia_dashboard',					// PHP-Funktion
 		'dashicons-editor-code'					// Icon
 	);
-	add_submenu_page( // Download
+	add_submenu_page(
 		'null',									// Parent-Slug (null = hidden)
 		'IULIA',								// Seitentitel
 		'IULIA',								// Menütitel
@@ -17,7 +17,7 @@ function cb_iulia_initialise_menu() {
 		'cb-iulia-download',					// Slug
 		'cb_iulia_download'						// PHP-Funktion
 	);
-	add_submenu_page( // Remove
+	add_submenu_page(
 		'null',									// Parent-Slug (null = hidden)
 		'IULIA',								// Seitentitel
 		'IULIA',								// Menütitel
@@ -25,7 +25,7 @@ function cb_iulia_initialise_menu() {
 		'cb-iulia-remove',						// Slug
 		'cb_iulia_remove'						// PHP-Funktion
 	);
-	add_submenu_page( // Update (self)
+	add_submenu_page(
 		'null',									// Parent-Slug (null = hidden)
 		'IULIA',								// Seitentitel
 		'IULIA',								// Menütitel
@@ -107,6 +107,34 @@ function cb_iulia_remove() {
 function cb_iulia_update() {
 	?> <h1>IULIA - Intuitive und leistungsfähige Installations-App</h1> <?php
 
+	// Download-Pfad definieren
+	$url = 'https://github.com/cbradigital/cbra-iulia-core/archive/refs/heads/main.zip';
+
+	// Speicherpfad und Dateinamen festlegen
+	$workDir = get_stylesheet_directory() . '/cb-iulia';
+	$tmpDir = $workDir . '/cbra-iulia-core-main';
+	$updFile = $workDir . '/cbra-iulia-core.zip';
+
+	// Update herunterladen und in Verzeichnis kopieren...
+	$tmpFile = download_url($url);
+	rename($tmpFile, $updFile);
+
+	// ... und ins Hauptverzeichnis extrahieren
+	$zip = new ZipArchive;
+	if($zip->open($updFile)) {
+		$zip->extractTo($workDir);
+		$zip->close();
+		if(is_Dir($tmpDir)) {
+			foreach(glob($tmpDir . '/*') as $file) {
+				$newName = str_replace('/cbra-iulia-core-main', '', $file);
+				rename($file, $newName);
+			}
+		}
+		if(!scandir($tmpDir)) {
+			rmDir($tmpDir);
+		}
+	}
+	?> <a href="/wp-admin/admin.php?page=cb-iulia">Zurück zum Dashboard</a> <?php
 }
 
 ?>
